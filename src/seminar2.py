@@ -113,6 +113,7 @@ class SoftmaxClassifier:
 
         return loss_history
 
+
     def evaluate(self, X, y):
         """
         Use the trained weights of this linear classifier to predict labels for
