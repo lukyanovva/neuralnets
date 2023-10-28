@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 from copy import deepcopy
+import unittest
 
 from seminar3 import *
 from test_utils import get_preprocessed_data
@@ -34,6 +35,7 @@ class Optimizer(ABC):
 class SGD(Optimizer):
     def step(self, w, d_w, learning_rate):
         # TODO Update W with d_W
+        w -= learning_rate * d_w
         pass
 
 
@@ -46,6 +48,8 @@ class Momentum(Optimizer):
         if self.velocity is None:
             self.velocity = np.zeros_like(d_w)
         # TODO Update W with d_W and velocity
+        self.velocity = self.rho * self.velocity + d_w
+        w -= self.velocity * learning_rate
 
 
 class DropoutLayer(Layer):
@@ -53,6 +57,9 @@ class DropoutLayer(Layer):
         if train:
             # TODO zero mask in random X position and scale remains
             pass
+            self.mask = np.random.random(size = x.shape) > self.p
+            self.scale = 1 / (1 - self.p)
+            return x * self.scale * self.mask
         else:
             return x
 
@@ -103,9 +110,13 @@ class BatchNormLayer(Layer):
         self.num_examples = x.shape[0]
         if train:
             # TODO Compute mean_x and var_x
+            self.mean_x = np.mean(x, axis=0, keepdims=True)
+            self.var_x = np.var(x, axis=0, keepdims=True)
             self._update_running_variables()
         else:
             # TODO Copy mean_x and var_x from running variables
+            self.mean_x = self.running_mean_x
+            self.var_x = self.running_var_x
             pass
 
         self.var_x += epsilon
