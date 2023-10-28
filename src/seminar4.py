@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from copy import deepcopy
-import unittest
+
 
 from seminar3 import *
 from test_utils import get_preprocessed_data
