@@ -6,7 +6,6 @@ import unittest
 
 from seminar3 import *
 from test_utils import get_preprocessed_data
-
 epsilon = 1e-3
 
 
